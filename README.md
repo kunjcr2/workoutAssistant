@@ -32,9 +32,8 @@ project-root/<br>
 │   └── exercise.html           # Exercise selector page<br>
 │   └── main.html               # Main webpage (exercise tracking)<br>
 ├── static/<br>
-│   ├── css/<br>
-│       └── paper.css           # Styles for the login page<br>
-│       └── paper2.css          # Styles for exercise page<br>
+│   └── paper.css           # Styles for the login page<br>
+│   └── paper2.css          # Styles for exercise page<br>
 └── README.md                   # Project documentation (this file)<br>
 
 Make sure that all the files are saved in the correct directory as shown above for the program to work smoothly.
