@@ -22,34 +22,24 @@ pip install -r requirements.txt
 # Directory Structure
 In order to run the program properly, the following files should be saved in their respective directories:
 
-project-root/
-│
-├── loginPage.py                # Main application script
-├── loginGPT.py
-├── bodyDetection.py
-├── templates/
-│   ├── login.html        # registration webpage
-│   └── exercise.html       # exercise selector page
-|   └── main.html          # main webpage
-├── static/
-│   ├── css/
-│       └── paper.css    # Styles for the login page
-|       └── paper2.css    # Styles for exercise page
-└── README.md             # Project documentation (this file)
+project_root/->loginPage.py, loginGPT.py, bodyDetection.py
+						 ->static/->paper.css, paper2.css
+			 			 ->templates/->login.html, exercise.html, main.html
+
 Make sure that all the files are saved in the correct directory as shown above for the program to work smoothly.
 
 # Running the Application
 
-1.Clone this repository:
-# bash
+# 1.Clone this repository:
+(bash)
 git clone https://github.com/username/repository.git
 Navigate to the project directory:
 
-# bash
+(bash)
 cd project-root
 
-2. Start the Flask app:
-# bash
+# 2. Start the Flask app:
+(bash)
 python app.py
 Open your web browser and go to http://127.0.0.1:5000/ to access the application.
 
