@@ -1,7 +1,7 @@
 import openai
 
 class GPT2:
-    def __init__(self, api_key="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", model="gpt-4o-mini"):
+    def __init__(self, api_key="YOUR-API-KEY-HERE", model="gpt-4o-mini"):
         openai.api_key = api_key
         self.model = model
     def chat(self, prompt):
