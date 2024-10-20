@@ -22,9 +22,20 @@ pip install -r requirements.txt
 # Directory Structure
 In order to run the program properly, the following files should be saved in their respective directories:
 
-project_root/->loginPage.py, loginGPT.py, bodyDetection.py
-						 ->static/->paper.css, paper2.css
-			 			 ->templates/->login.html, exercise.html, main.html
+project-root/<br>
+│<br>
+├── loginPage.py                # Main application script<br>
+├── loginGPT.py                 # GPT-based login helper<br>
+├── bodyDetection.py            # Script for detecting body movements<br>
+├── templates/<br>
+│   ├── login.html              # Registration webpage<br>
+│   └── exercise.html           # Exercise selector page<br>
+│   └── main.html               # Main webpage (exercise tracking)<br>
+├── static/<br>
+│   ├── css/<br>
+│       └── paper.css           # Styles for the login page<br>
+│       └── paper2.css          # Styles for exercise page<br>
+└── README.md                   # Project documentation (this file)<br>
 
 Make sure that all the files are saved in the correct directory as shown above for the program to work smoothly.
 
