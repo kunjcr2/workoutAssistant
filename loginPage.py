@@ -4,7 +4,6 @@ import ast
 import cv2
 from bodyDetection import PoseDetector
 import math
-import json
 import time
 
 app = Flask(__name__)
@@ -20,48 +19,49 @@ current_ex_index = 0
 filtered_exercises = []
 name1 = "" 
 exercise_landmarks = {
-        "Bicep Curls": [(12, 14, 16)],
-        "Squats": [(24, 26, 28)],
-        "Push Ups": [(12, 14, 16)],
-        "Lunges": [(24, 26, 28)],
-        "Shoulder Presses": [(11, 13, 15)],
-        "Deadlifts": [(24, 26, 28)],
-        "Plank": [(11, 13, 15)],
-        "Mountain Climbers": [(12, 14, 16), (24, 26, 28)],
-        "Jumping Jacks": [(12, 14, 16), (24, 26, 28)],
-        "Burpees": [(12, 14, 16), (24, 26, 28)],
-        "Side Plank": [(11, 13, 15), (23, 25, 27)],
-        "Tricep Dips": [(12, 14, 16)],
-        "Bent Over Row": [(12, 14, 16)],
-        "Glute Bridges": [(24, 26, 28)],
-        "High Knees": [(24, 26, 28)],
-        "Crunches": [(12, 24, 26)],
-        "Leg Raises": [(24, 26, 28)],
-        "Side Lunges": [(24, 26, 28)],
-        "Reverse Lunges": [(24, 26, 28)],
-        "Jump Squats": [(24, 26, 28)],
-        "Front Raises": [(12, 14, 16)],
-        "Calf Raises": [(24, 26, 28)],
-        "Russian Twists": [(12, 24, 26)],
-        "Leg Press": [(24, 26, 28)],
-        "Leg Extension": [(24, 26, 28)],
-        "Bicycle Crunches": [(12, 14, 16), (24, 26, 28)],
-        "Plank To Push-Ups": [(11, 13, 15), (12, 14, 16)],
-        "Side Plank To Push-Ups": [(11, 13, 15), (12, 14, 16)],
-        "Dumbbell Shoulder Press": [(11, 13, 15)],
-        "Dumbbell Chest Press": [(12, 14, 16)],
-        "Pull Ups": [(12, 14, 16)],
-        "Bench Press": [(12, 14, 16)],
-        "Rowing Machine": [(12, 14, 16), (24, 26, 28)],
-        "Kettlebell Swings": [(12, 14, 16), (24, 26, 28)],
-        "Box Jumps": [(24, 26, 28)],
-        "Step Ups": [(24, 26, 28)],
-        "Lat Pulldown": [(12, 14, 16)],
-        "Clapping Push Ups": [(12, 14, 16)],
-        "Medicine Ball Slams": [(12, 14, 16)],
-        "Seated Shoulder Press": [(11, 13, 15)],
-    }
-    
+    "bicepcurls": [(12, 14, 16)],
+    "bicepscurls": [(12, 14, 16)],
+    "bicepcurl": [(12, 14, 16)],
+    "squats": [(24, 26, 28)],
+    "pushups": [(12, 14, 16)],
+    "lunges": [(24, 26, 28)],
+    "shoulderpresses": [(11, 13, 15)],
+    "deadlifts": [(24, 26, 28)],
+    "plank": [(11, 13, 15)],
+    "mountainclimbers": [(12, 14, 16), (24, 26, 28)],
+    "jumpingjacks": [(12, 14, 16), (24, 26, 28)],
+    "burpees": [(12, 14, 16), (24, 26, 28)],
+    "sideplank": [(11, 13, 15), (23, 25, 27)],
+    "tricepdips": [(12, 14, 16)],
+    "bentoverrow": [(12, 14, 16)],
+    "glutebridges": [(24, 26, 28)],
+    "highknees": [(24, 26, 28)],
+    "crunches": [(12, 24, 26)],
+    "legraises": [(24, 26, 28)],
+    "sidelunges": [(24, 26, 28)],
+    "reverselunges": [(24, 26, 28)],
+    "jumpsquats": [(24, 26, 28)],
+    "frontraises": [(12, 14, 16)],
+    "calfraises": [(24, 26, 28)],
+    "russiantwists": [(12, 24, 26)],
+    "legpress": [(24, 26, 28)],
+    "legextension": [(24, 26, 28)],
+    "bicyclecrunches": [(12, 14, 16), (24, 26, 28)],
+    "planktopushups": [(11, 13, 15), (12, 14, 16)],
+    "sideplanktopushups": [(11, 13, 15), (12, 14, 16)],
+    "dumbbellshoulderpress": [(11, 13, 15)],
+    "dumbbellchestpress": [(12, 14, 16)],
+    "pullups": [(12, 14, 16)],
+    "benchpress": [(12, 14, 16)],
+    "rowingmachine": [(12, 14, 16), (24, 26, 28)],
+    "kettlebellswings": [(12, 14, 16), (24, 26, 28)],
+    "boxjumps": [(24, 26, 28)],
+    "stepups": [(24, 26, 28)],
+    "latpulldown": [(12, 14, 16)],
+    "clappingpushups": [(12, 14, 16)],
+    "medicineballslams": [(12, 14, 16)],
+    "seatedshoulderpress": [(11, 13, 15)]
+}    
 
 def calAngle(pointA, pointB, pointC):
     AB = [pointA[0] - pointB[0], pointA[1] - pointB[1]]
@@ -130,24 +130,22 @@ def update_counter(pointA, pointB, pointC):
     global counter, curl_stage  # Add curl_stage here to make it global
     angle = calAngle(pointA, pointB, pointC)
 
-    # Update the curl stage based on angle
     if angle > 160:  
         curl_stage = "down"
     elif angle < 30 and curl_stage == "down": 
         curl_stage = "up"
         counter += 1
-        print(f"Counter updated to {counter}")  # Print to console for debugging
+        print(f"Counter updated to {counter}")  
 
-# In generate_video(), ensure exercises are initialized
 def generate_video():
     global counter, currEx, target_reps, exercises, exercise_landmarks
     exercise_index = 0
     if not exercises:
         print("No exercises available")
-        return  # Add this to avoid errors if exercises are empty
+        return
 
     current_reps = exercises[exercise_index][1] 
-    required_landmarks = exercise_landmarks[currEx]
+    required_landmarks = exercise_landmarks[currEx.replace("-","").lower()]
 
     while True:
         success, frame = cap.read()
