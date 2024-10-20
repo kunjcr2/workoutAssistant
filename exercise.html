@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Tracker</title>
+    <link rel="stylesheet" href="static\paper2.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>
+            <p class="text-secondary"> Alright {{ name }}, what would you like to work on today?</p>
+        </h2>
+        <form method="POST">
+            <input type="text" placeholder="Enter your preferred exercise and describe what muscles you would like to work on!"
+                id="exercise" name="exercise">
+            <button type="submit">Submit</button>
+        </form>
+
+        <p>
+            {% if exercises %}
+        <ul>
+            {% for name, reps in exercises %}
+            <li><strong>{{ name }}</strong>: {{ reps }}</li>
+            {% endfor %}
+        </ul>
+        <form method="POST" action="{{ url_for('confirm') }}">
+            <button type="submit">Confirm</button>
+        </form>
+        {% endif %}
+        </p>
+    </div>
+</body>
+
+</html>

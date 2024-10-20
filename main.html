@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Your Progress Bar!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #exercise-info {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Exercise Tracker</h1>
+    <div id="exercise-info">
+        <p>Current Exercise: <span id="exercise-name">{{ currEx }}</span></p>
+        <p>Reps Completed: <span id="counter">{{ counter }}</span></p>
+        <p>Target Reps: <span id="target-reps">{{ target_reps }}</span></p>
+    </div>
+    <div>
+        <img src="{{ url_for('video_feed') }}" id="videoElement" alt="Live Video Feed">
+    </div>
+
+    <script>
+        // Function to fetch and update the exercise data
+        function updateExerciseData() {
+            fetch('/get_exercise_data')
+                .then(response => response.json()) // Convert response to JSON
+                .then(data => {
+                    // Update the HTML elements with new data
+                    document.getElementById('exercise-name').innerText = data.currEx;
+                    document.getElementById('counter').innerText = data.counter;
+                    document.getElementById('target-reps').innerText = data.target_reps;
+                })
+                .catch(error => console.error('Error fetching exercise data:', error));
+        }
+
+        setInterval(updateExerciseData, 1000);
+    </script>
+
+</body>
+
+</html>
