@@ -9,43 +9,71 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
         }
 
-        #exercise-info {
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #2e8b57;
+        }
+
+        h3 {
             margin: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
+            padding: 15px;
+            border: 1px solid #8fbc8f;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 139, 69, 0.2);
+            width: 300px;
+            text-align: center;
+            background-color: #e6fffa;
+            color: #2f4f4f;
+        }
+
+        div {
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #exercise-name {
+            font-weight: bold;
+            font-size: 1em;
+            color: #d2691e;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Exercise Tracker</h1>
-    <div id="exercise-info">
-        <p>Current Exercise: <span id="exercise-name">{{ currEx }}</span></p>
-        <p>Reps Completed: <span id="counter">{{ counter }}</span></p>
-        <p>Target Reps: <span id="target-reps">{{ target_reps }}</span></p>
-    </div>
+    <h1>Exercise Tracking for {{ name }}</h1>
+    <h3>Exercise: <span id="exercise-name">{{ currEx }}</span></h3>
+    <h3>Reps: <span id="counter">{{ counter }}</span>/<span id="target-reps">{{ target_reps }}</span></h3>
+
     <div>
-        <img src="{{ url_for('video_feed') }}" id="videoElement" alt="Live Video Feed">
+        <img src="{{ url_for('video_feed') }}" width="640" height="480">
     </div>
 
     <script>
-        // Function to fetch and update the exercise data
-        function updateExerciseData() {
-            fetch('/get_exercise_data')
-                .then(response => response.json()) // Convert response to JSON
+        function updateExerciseInfo() {
+            fetch('/update_info')
+                .then(response => response.json())
                 .then(data => {
-                    // Update the HTML elements with new data
-                    document.getElementById('exercise-name').innerText = data.currEx;
-                    document.getElementById('counter').innerText = data.counter;
-                    document.getElementById('target-reps').innerText = data.target_reps;
+                    document.querySelector('#exercise-name').textContent = data.currEx;
+                    document.querySelector('#counter').textContent = data.counter; // Remove 'Counter: ' prefix for clarity
+                    document.querySelector('#target-reps').textContent = data.target_reps;
                 })
-                .catch(error => console.error('Error fetching exercise data:', error));
+                .catch(error => console.error('Error fetching data:', error)); // Optional: handle any fetch errors
         }
 
-        setInterval(updateExerciseData, 1000);
+        setInterval(updateExerciseInfo, 500);
     </script>
 
 </body>
