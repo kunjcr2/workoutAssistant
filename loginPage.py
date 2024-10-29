@@ -14,54 +14,56 @@ cap = cv2.VideoCapture(0)
 currEx = ""
 target_reps = 0
 counter = 0
-exercise_list = []
-current_ex_index = 0
+exercises = []
+exercise_index  = 0
 filtered_exercises = []
-name1 = "" 
+name1 = ""
+curl_stage = "down"
+
 exercise_landmarks = {
-    "bicepcurls": [(12, 14, 16)],
-    "bicepscurls": [(12, 14, 16)],
-    "bicepcurl": [(12, 14, 16)],
-    "squats": [(24, 26, 28)],
-    "pushups": [(12, 14, 16)],
-    "lunges": [(24, 26, 28)],
-    "shoulderpresses": [(11, 13, 15)],
-    "deadlifts": [(24, 26, 28)],
-    "plank": [(11, 13, 15)],
-    "mountainclimbers": [(12, 14, 16), (24, 26, 28)],
-    "jumpingjacks": [(12, 14, 16), (24, 26, 28)],
-    "burpees": [(12, 14, 16), (24, 26, 28)],
-    "sideplank": [(11, 13, 15), (23, 25, 27)],
-    "tricepdips": [(12, 14, 16)],
-    "bentoverrow": [(12, 14, 16)],
-    "glutebridges": [(24, 26, 28)],
-    "highknees": [(24, 26, 28)],
-    "crunches": [(12, 24, 26)],
-    "legraises": [(24, 26, 28)],
-    "sidelunges": [(24, 26, 28)],
-    "reverselunges": [(24, 26, 28)],
-    "jumpsquats": [(24, 26, 28)],
-    "frontraises": [(12, 14, 16)],
-    "calfraises": [(24, 26, 28)],
-    "russiantwists": [(12, 24, 26)],
-    "legpress": [(24, 26, 28)],
-    "legextension": [(24, 26, 28)],
-    "bicyclecrunches": [(12, 14, 16), (24, 26, 28)],
+    "bicepcurls": [(12, 14, 16), (11, 13, 15)],
+    "bicepscurls": [(12, 14, 16), (11, 13, 15)],
+    "bicepcurl": [(12, 14, 16), (11, 13, 15)],
+    "squats": [(24, 26, 28), (23, 25, 27)],
+    "pushups": [(12, 14, 16), (11, 13, 15)],
+    "lunges": [(24, 26, 28), (23, 25, 27)],
+    "shoulderpresses": [(11, 13, 15), (12, 14, 16)],
+    "deadlifts": [(24, 26, 28), (23, 25, 27)],
+    "plank": [(11, 13, 15), (12, 14, 16)],
+    "mountainclimbers": [(12, 14, 16), (24, 26, 28), (11, 13, 15), (23, 25, 27)],
+    "jumpingjacks": [(12, 14, 16), (24, 26, 28), (11, 13, 15), (23, 25, 27)],
+    "burpees": [(12, 14, 16), (24, 26, 28), (11, 13, 15), (23, 25, 27)],
+    "sideplank": [(11, 13, 15), (23, 25, 27), (12, 14, 16), (24, 26, 28)],
+    "tricepdips": [(12, 14, 16), (11, 13, 15)],
+    "bentoverrow": [(12, 14, 16), (11, 13, 15)],
+    "glutebridges": [(24, 26, 28), (23, 25, 27)],
+    "highknees": [(24, 26, 28), (23, 25, 27)],
+    "crunches": [(12, 24, 26), (11, 23, 25)],
+    "legraises": [(24, 26, 28), (23, 25, 27)],
+    "sidelunges": [(24, 26, 28), (23, 25, 27)],
+    "reverselunges": [(24, 26, 28), (23, 25, 27)],
+    "jumpsquats": [(24, 26, 28), (23, 25, 27)],
+    "frontraises": [(12, 14, 16), (11, 13, 15)],
+    "calfraises": [(24, 26, 28), (23, 25, 27)],
+    "russiantwists": [(12, 24, 26), (11, 23, 25)],
+    "legpress": [(24, 26, 28), (23, 25, 27)],
+    "legextension": [(24, 26, 28), (23, 25, 27)],
+    "bicyclecrunches": [(12, 14, 16), (24, 26, 28), (11, 13, 15), (23, 25, 27)],
     "planktopushups": [(11, 13, 15), (12, 14, 16)],
     "sideplanktopushups": [(11, 13, 15), (12, 14, 16)],
-    "dumbbellshoulderpress": [(11, 13, 15)],
-    "dumbbellchestpress": [(12, 14, 16)],
-    "pullups": [(12, 14, 16)],
-    "benchpress": [(12, 14, 16)],
-    "rowingmachine": [(12, 14, 16), (24, 26, 28)],
-    "kettlebellswings": [(12, 14, 16), (24, 26, 28)],
-    "boxjumps": [(24, 26, 28)],
-    "stepups": [(24, 26, 28)],
-    "latpulldown": [(12, 14, 16)],
-    "clappingpushups": [(12, 14, 16)],
-    "medicineballslams": [(12, 14, 16)],
-    "seatedshoulderpress": [(11, 13, 15)]
-}    
+    "dumbbellshoulderpress": [(11, 13, 15), (12, 14, 16)],
+    "dumbbellchestpress": [(12, 14, 16), (11, 13, 15)],
+    "pullups": [(12, 14, 16), (11, 13, 15)],
+    "benchpress": [(12, 14, 16), (11, 13, 15)],
+    "rowingmachine": [(12, 14, 16), (24, 26, 28), (11, 13, 15), (23, 25, 27)],
+    "kettlebellswings": [(12, 14, 16), (24, 26, 28), (11, 13, 15), (23, 25, 27)],
+    "boxjumps": [(24, 26, 28), (23, 25, 27)],
+    "stepups": [(24, 26, 28), (23, 25, 27)],
+    "latpulldown": [(12, 14, 16), (11, 13, 15)],
+    "clappingpushups": [(12, 14, 16), (11, 13, 15)],
+    "medicineballslams": [(12, 14, 16), (11, 13, 15)],
+    "seatedshoulderpress": [(11, 13, 15), (12, 14, 16)]
+}
 
 def calAngle(pointA, pointB, pointC):
     AB = [pointA[0] - pointB[0], pointA[1] - pointB[1]]
@@ -75,15 +77,22 @@ def calAngle(pointA, pointB, pointC):
     return math.degrees(angleRad)
 
 def update_counter(pointA, pointB, pointC):
-    global counter
+    global counter, curl_stage
     angle = calAngle(pointA, pointB, pointC)
 
-    if angle > 160:  
-        curl_stage = "down"
-    elif angle < 30 and curl_stage == "down": 
-        curl_stage = "up"
-        counter += 1
-        print(f"Counter updated to {counter}")
+    if target_reps>20:
+        if angle<100 and angle>80:
+            counter+=1;
+            if  counter==target_reps:
+                curl_stage+=1
+                counter = 0
+    else:
+        if angle > 160:  
+            curl_stage = "down"
+        elif angle < 30 and curl_stage == "down": 
+            curl_stage = "up"
+            counter += 1
+            print(f"Counter updated to {counter}")
 
 def get_exercise(exercise):
     global exercises
@@ -107,7 +116,7 @@ def login():
 
 @app.route("/exercise", methods=["GET", "POST"])
 def exercise():
-    global currEx, counter, target_reps, filtered_exercises, name1
+    global currEx, counter, target_reps, name1, exercise_index
     if request.method == "POST":
         exercise = request.form.get("exercise")
         exercises = get_exercise(exercise)
@@ -118,36 +127,28 @@ def exercise():
 
 @app.route("/confirm", methods=["GET", "POST"])
 def confirm():
-    return redirect(url_for("video_feed"))
+    return render_template('main.html', name=name1, currEx=currEx, counter=counter, target_reps=target_reps)
 
-@app.route("/video_feed", methods=["GET", "POST"])
-def video_feed():
-    return Response(generate_video(), mimetype="multipart/x-mixed-replace; boundary=frame")
-
-curl_stage = "down"  # Declare curl_stage globally
-
-def update_counter(pointA, pointB, pointC):
-    global counter, curl_stage  # Add curl_stage here to make it global
-    angle = calAngle(pointA, pointB, pointC)
-
-    if angle > 160:  
-        curl_stage = "down"
-    elif angle < 30 and curl_stage == "down": 
-        curl_stage = "up"
-        counter += 1
-        print(f"Counter updated to {counter}")  
+@app.route("/update_info")
+def update_info():
+    global currEx, counter, target_reps
+    return {
+        "currEx": currEx,
+        "counter": counter,
+        "target_reps": target_reps
+    }
 
 def generate_video():
-    global counter, currEx, target_reps, exercises, exercise_landmarks
-    exercise_index = 0
+    global counter, currEx, target_reps, exercises, exercise_landmarks, exercise_index
+
     if not exercises:
         print("No exercises available")
         return
 
-    current_reps = exercises[exercise_index][1] 
-    required_landmarks = exercise_landmarks[currEx.replace("-","").lower()]
+    required_landmarks = exercise_landmarks[currEx.replace("-", "").lower()]
 
     while True:
+        
         success, frame = cap.read()
         if not success:
             time.sleep(0.1)
@@ -160,7 +161,6 @@ def generate_video():
         if results.pose_landmarks:
             if required_landmarks:
                 try:
-                    # Extract points using the required landmarks
                     pointA = (results.pose_landmarks.landmark[required_landmarks[0][0]].x, 
                               results.pose_landmarks.landmark[required_landmarks[0][0]].y)
                     pointB = (results.pose_landmarks.landmark[required_landmarks[0][1]].x, 
@@ -169,11 +169,6 @@ def generate_video():
                               results.pose_landmarks.landmark[required_landmarks[0][2]].y)
 
                     update_counter(pointA, pointB, pointC)
-
-                    cv2.putText(frame, f"Currently: {currEx}", (10, 100), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-                    cv2.putText(frame, f"Counter: {counter}/{target_reps}", (10, 60), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
                     if counter >= target_reps:
                         counter = 0  
@@ -187,15 +182,16 @@ def generate_video():
                             break 
 
                 except Exception as e:
-                    print(f"Error processing landmarks: {e}")  # Debugging
-                    time.sleep(0.1)
-                    continue
+                    print(f"Error processing landmarks: {e}")
 
         ret, buffer = cv2.imencode(".jpg", frame)
         frame = buffer.tobytes()
-
-        yield (b"--frame\r\n"
-               b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+@app.route("/video_feed")
+def video_feed():
+    return Response(generate_video(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == "__main__":
     app.run(debug=True)
