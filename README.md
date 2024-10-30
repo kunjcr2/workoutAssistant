@@ -24,7 +24,7 @@ In order to run the program properly, the following files should be saved in the
 
 project-root/<br>
 │<br>
-├── loginPage.py                # Main application script<br>
+├── app\.py                # Main application script<br>
 ├── loginGPT.py                 # GPT-based login helper<br>
 ├── bodyDetection.py            # Script for detecting body movements<br>
 ├── templates/<br>
